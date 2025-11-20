@@ -14,13 +14,14 @@ use edit_prediction_context::{
     EditPredictionExcerpt, EditPredictionExcerptOptions, EditPredictionScoreOptions, Line,
     SyntaxIndex, SyntaxIndexState,
 };
+use editor::Editor;
 use feature_flags::{FeatureFlag, FeatureFlagAppExt as _};
 use futures::AsyncReadExt as _;
 use futures::channel::{mpsc, oneshot};
 use gpui::http_client::{AsyncBody, Method};
 use gpui::{
-    App, Entity, EntityId, Global, SemanticVersion, SharedString, Subscription, Task, WeakEntity,
-    http_client, prelude::*,
+    App, AsyncApp, Entity, EntityId, Global, SemanticVersion, SharedString, Subscription, Task,
+    WeakEntity, http_client, prelude::*,
 };
 use language::{Anchor, Buffer, DiagnosticSet, LanguageServerId, Point, ToOffset as _, ToPoint};
 use language::{BufferSnapshot, OffsetRangeExt};
@@ -32,7 +33,6 @@ use release_channel::AppVersion;
 use serde::de::DeserializeOwned;
 use std::collections::{VecDeque, hash_map};
 
-use std::ffi::OsStr;
 use std::fmt::Write;
 use std::ops::Range;
 use std::path::Path;
@@ -251,8 +251,23 @@ struct ZetaProject {
 
 #[derive(Debug, Clone)]
 struct CurrentEditPrediction {
-    pub requested_by_buffer_id: EntityId,
+    pub requested_by: PredictionRequestedBy,
     pub prediction: EditPrediction,
+}
+
+#[derive(Debug, Clone)]
+enum PredictionRequestedBy {
+    DiagnosticsUpdate,
+    Buffer(EntityId),
+}
+
+impl PredictionRequestedBy {
+    pub fn buffer_id(&self) -> Option<EntityId> {
+        match self {
+            PredictionRequestedBy::DiagnosticsUpdate => None,
+            PredictionRequestedBy::Buffer(buffer_id) => Some(*buffer_id),
+        }
+    }
 }
 
 impl CurrentEditPrediction {
@@ -275,11 +290,13 @@ impl CurrentEditPrediction {
             return true;
         };
 
+        let requested_by_buffer_id = self.requested_by.buffer_id();
+
         // This reduces the occurrence of UI thrash from replacing edits
         //
         // TODO: This is fairly arbitrary - should have a more general heuristic that handles multiple edits.
-        if self.requested_by_buffer_id == self.prediction.buffer.entity_id()
-            && self.requested_by_buffer_id == old_prediction.prediction.buffer.entity_id()
+        if requested_by_buffer_id == Some(self.prediction.buffer.entity_id())
+            && requested_by_buffer_id == Some(old_prediction.prediction.buffer.entity_id())
             && old_edits.len() == 1
             && new_edits.len() == 1
         {
@@ -691,16 +708,25 @@ impl Zeta {
         let project_state = self.projects.get(&project.entity_id())?;
 
         let CurrentEditPrediction {
-            requested_by_buffer_id,
+            requested_by,
             prediction,
         } = project_state.current_prediction.as_ref()?;
 
         if prediction.targets_buffer(buffer.read(cx)) {
             Some(BufferEditPrediction::Local { prediction })
-        } else if *requested_by_buffer_id == buffer.entity_id() {
-            Some(BufferEditPrediction::Jump { prediction })
         } else {
-            None
+            let show_jump = match requested_by {
+                PredictionRequestedBy::Buffer(requested_by_buffer_id) => {
+                    requested_by_buffer_id == &buffer.entity_id()
+                }
+                PredictionRequestedBy::DiagnosticsUpdate => true,
+            };
+
+            if show_jump {
+                Some(BufferEditPrediction::Jump { prediction })
+            } else {
+                None
+            }
         }
     }
 
@@ -765,6 +791,7 @@ impl Zeta {
         let request_task = self.request_prediction(project, buffer, position, cx);
         let buffer = buffer.clone();
         let project = project.clone();
+        dbg!();
 
         cx.spawn(async move |this, cx| {
             if let Some(prediction) = request_task.await? {
@@ -775,7 +802,7 @@ impl Zeta {
                         .context("Project not found")?;
 
                     let new_prediction = CurrentEditPrediction {
-                        requested_by_buffer_id: buffer.entity_id(),
+                        requested_by: PredictionRequestedBy::Buffer(buffer.entity_id()),
                         prediction: prediction,
                     };
 
@@ -844,6 +871,7 @@ impl Zeta {
         let recent_buffers = project_state.recent_paths.iter().cloned();
         let http_client = cx.http_client();
 
+        dbg!();
         let recent_buffer_snapshots = recent_buffers
             .filter_map(|project_path| {
                 let buffer = project.read(cx).get_open_buffer(&project_path, cx)?;
@@ -988,6 +1016,8 @@ impl Zeta {
 
                 let response: sweep_ai::AutocompleteResponse = serde_json::from_slice(&body)?;
 
+                dbg!(&response);
+
                 let old_text = snapshot
                     .text_for_range(response.start_index..response.end_index)
                     .collect::<String>();
@@ -1013,64 +1043,21 @@ impl Zeta {
         cx.spawn(async move |this, cx| {
             let (id, edits, old_snapshot) = result.await?;
 
-            if edits.is_empty() && has_events && allow_jump {
-                // find the closest diagnostic to the cursor that wasn't close enough to be included in the last request
-                let mut jump_location = snapshot
-                    .diagnostic_groups(None)
-                    .into_iter()
-                    .filter_map(|(_, group)| {
-                        let range = &group.entries[group.primary_ix].range.to_point(&snapshot);
-                        if range.overlaps(&diagnostic_search_range) {
-                            None
-                        } else {
-                            Some(range.start)
-                        }
-                    })
-                    .min_by_key(|probe| probe.row.abs_diff(cursor_point.row))
-                    .map(|position| (active_buffer.clone(), snapshot.anchor_before(position)));
-
-                if jump_location.is_none() {
-                    let active_buffer_path = active_buffer.read_with(cx, |buffer, cx| {
-                        let file = buffer.file()?;
-
-                        Some(ProjectPath {
-                            worktree_id: file.worktree_id(cx),
-                            path: file.path().clone(),
-                        })
-                    })?;
-
-                    let buffer_task = project.update(cx, |project, cx| {
-                        let (path, _, _) = project
-                            .diagnostic_summaries(false, cx)
-                            .filter(|(path, _, _)| Some(path) != active_buffer_path.as_ref())
-                            .max_by_key(|(path, _, _)| {
-                                // find the buffer with errors that shares the most parent directories
-                                path.path
-                                    .components()
-                                    .zip(full_path.components())
-                                    .take_while(|(a, b)| OsStr::new(a) == b.as_os_str())
-                                    .count()
-                            })?;
-
-                        Some(project.open_buffer(path, cx))
-                    })?;
-
-                    if let Some(buffer_task) = buffer_task {
-                        let closest_buffer = buffer_task.await?;
-
-                        jump_location = closest_buffer
-                            .read_with(cx, |buffer, _cx| {
-                                buffer
-                                    .buffer_diagnostics(None)
-                                    .into_iter()
-                                    .min_by_key(|entry| entry.diagnostic.severity)
-                                    .map(|entry| entry.range.start)
-                            })?
-                            .map(|position| (closest_buffer, position));
-                    }
-                }
-
-                if let Some((jump_buffer, jump_position)) = jump_location {
+            if edits.is_empty() {
+                if dbg!(has_events)
+                    && dbg!(allow_jump)
+                    && let Some((jump_buffer, jump_position)) = dbg!(
+                        Self::next_diagnostic_location(
+                            active_buffer,
+                            &snapshot,
+                            diagnostic_search_range,
+                            cursor_point,
+                            &project,
+                            cx,
+                        )
+                        .await?
+                    )
+                {
                     return this
                         .update(cx, |this, cx| {
                             this.request_prediction_with_sweep(
@@ -1112,6 +1099,85 @@ impl Zeta {
 
             anyhow::Ok(Some(prediction))
         })
+    }
+
+    async fn next_diagnostic_location(
+        active_buffer: Entity<Buffer>,
+        active_buffer_snapshot: &BufferSnapshot,
+        active_buffer_diagnostic_search_range: Range<Point>,
+        active_buffer_cursor_point: Point,
+        project: &Entity<Project>,
+        cx: &mut AsyncApp,
+    ) -> Result<Option<(Entity<Buffer>, language::Anchor)>> {
+        // find the closest diagnostic to the cursor that wasn't close enough to be included in the last request
+        let mut jump_location = active_buffer_snapshot
+            .diagnostic_groups(None)
+            .into_iter()
+            .filter_map(|(_, group)| {
+                let range = &group.entries[group.primary_ix]
+                    .range
+                    .to_point(&active_buffer_snapshot);
+                if range.overlaps(&active_buffer_diagnostic_search_range) {
+                    None
+                } else {
+                    Some(range.start)
+                }
+            })
+            .min_by_key(|probe| probe.row.abs_diff(active_buffer_cursor_point.row))
+            .map(|position| {
+                (
+                    active_buffer.clone(),
+                    active_buffer_snapshot.anchor_before(position),
+                )
+            });
+
+        if jump_location.is_none() {
+            let active_buffer_path = active_buffer.read_with(cx, |buffer, cx| {
+                let file = buffer.file()?;
+
+                Some(ProjectPath {
+                    worktree_id: file.worktree_id(cx),
+                    path: file.path().clone(),
+                })
+            })?;
+
+            let buffer_task = project.update(cx, |project, cx| {
+                let (path, _, _) = project
+                    .diagnostic_summaries(false, cx)
+                    .filter(|(path, _, _)| Some(path) != active_buffer_path.as_ref())
+                    .max_by_key(|(path, _, _)| {
+                        // find the buffer with errors that shares most parent directories
+                        path.path
+                            .components()
+                            .zip(
+                                active_buffer_path
+                                    .as_ref()
+                                    .map(|p| p.path.components())
+                                    .unwrap_or_default(),
+                            )
+                            .take_while(|(a, b)| a == b)
+                            .count()
+                    })?;
+
+                Some(project.open_buffer(path, cx))
+            })?;
+
+            if let Some(buffer_task) = buffer_task {
+                let closest_buffer = buffer_task.await?;
+
+                jump_location = closest_buffer
+                    .read_with(cx, |buffer, _cx| {
+                        buffer
+                            .buffer_diagnostics(None)
+                            .into_iter()
+                            .min_by_key(|entry| entry.diagnostic.severity)
+                            .map(|entry| entry.range.start)
+                    })?
+                    .map(|position| (closest_buffer, position));
+            }
+        }
+
+        anyhow::Ok(jump_location)
     }
 
     fn request_prediction_with_zed_cloud(
