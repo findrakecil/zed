@@ -27,7 +27,7 @@ zypper install shellcheck           # openSUSE
 choco install shellcheck            # Windows (Chocolatey)
 ```
 
-And verify it is available from your path:
+And verify it is available from your `PATH`:
 
 ```sh
 which shellcheck
