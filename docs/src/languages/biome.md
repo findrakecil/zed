@@ -10,7 +10,7 @@ Report issues to: [https://github.com/biomejs/biome-zed/issues](https://github.c
 
 - Language Server: [biomejs/biome](https://github.com/biomejs/biome)
 
-## Biome Language Support
+## Supported Languages
 
 The Biome extension includes support for the following languages:
 
@@ -27,7 +27,7 @@ The Biome extension includes support for the following languages:
 
 ## Configuration
 
-By default, the `biome.json` file is required to be in the root of the workspace.
+Create `biome.json` in the root directory of the workspace with this settings:
 
 ```json [settings]
 {
@@ -35,6 +35,8 @@ By default, the `biome.json` file is required to be in the root of the workspace
 }
 ```
 
-For a full list of `biome.json` options see [Biome Configuration](https://biomejs.dev/reference/configuration/) documentation.
+For a full list of configuration options, see [Biome Configuration](https://biomejs.dev/reference/configuration/) documentation.
 
-See the [Biome Zed Extension README](https://github.com/biomejs/biome-zed) for a complete list of features and configuration options.
+### Features
+
+See the [Biome Zed Extension Reference](https://biomejs.dev/reference/zed/) for a complete list of editing features and configuration options.
