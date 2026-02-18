@@ -18,27 +18,27 @@ To avoid mishandling non-Ansible YAML files, the Ansible Language is not associa
 
 ```json [settings]
 "file_types": {
-    "Ansible": [
-      "**.ansible.yml",
-      "**.ansible.yaml",
-      "**/defaults/*.yml",
-      "**/defaults/*.yaml",
-      "**/meta/*.yml",
-      "**/meta/*.yaml",
-      "**/tasks/*.yml",
-      "**/tasks/*.yaml",
-      "**/handlers/*.yml",
-      "**/handlers/*.yaml",
-      "**/group_vars/*.yml",
-      "**/group_vars/*.yaml",
-      "**/host_vars/*.yml",
-      "**/host_vars/*.yaml",
-      "**/playbooks/*.yml",
-      "**/playbooks/*.yaml",
-      "**playbook*.yml",
-      "**playbook*.yaml"
-    ]
-  }
+  "Ansible": [
+    "**.ansible.yml",
+    "**.ansible.yaml",
+    "**/defaults/*.yml",
+    "**/defaults/*.yaml",
+    "**/meta/*.yml",
+    "**/meta/*.yaml",
+    "**/tasks/*.yml",
+    "**/tasks/*.yaml",
+    "**/handlers/*.yml",
+    "**/handlers/*.yaml",
+    "**/group_vars/*.yml",
+    "**/group_vars/*.yaml",
+    "**/host_vars/*.yml",
+    "**/host_vars/*.yaml",
+    "**/playbooks/*.yml",
+    "**/playbooks/*.yaml",
+    "**playbook*.yml",
+    "**playbook*.yaml"
+  ]
+}
 ```
 
 Feel free to modify this list as per your needs.
