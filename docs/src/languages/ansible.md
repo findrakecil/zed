@@ -47,34 +47,34 @@ Feel free to modify this list as per your needs.
 
 If your inventory file is in the YAML format, you can either:
 
-- Append the `ansible-lint` inventory json schema to it via the following comment at the top of your inventory file:
+- Append the `ansible-lint` inventory JSON schema to it via the following comment at the top of your inventory file:
 
 ```yml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json
 ```
 
-- Or configure the yaml language server settings to set this schema for all your inventory files, that match your inventory pattern, under your Zed settings ([ref](https://zed.dev/docs/languages/yaml)):
+- or, configure the YAML language server settings to set this schema for all your inventory files, that match your inventory pattern, under your Zed settings ([ref](https://zed.dev/docs/languages/yaml)):
 
 ```json [settings]
 "lsp": {
-    "yaml-language-server": {
-      "settings": {
-        "yaml": {
-          "schemas": {
-            "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json": [
-              "./inventory/*.yaml",
-              "hosts.yml",
-            ]
-          }
+  "yaml-language-server": {
+    "settings": {
+      "yaml": {
+        "schemas": {
+          "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json": [
+            "./inventory/*.yaml",
+            "hosts.yml",
+          ]
         }
       }
     }
+  }
 },
 ```
 
 ### LSP Configuration
 
-By default, the following default config is passed to the Ansible language server. It conveniently mirrors the defaults set by [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig/blob/03bc581e05e81d33808b42b2d7e76d70adb3b595/lua/lspconfig/configs/ansiblels.lua) for the Ansible language server:
+By default, the following configuration is passed to the Ansible language server. It conveniently mirrors the defaults set by [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig/blob/03bc581e05e81d33808b42b2d7e76d70adb3b595/lua/lspconfig/configs/ansiblels.lua) for the Ansible language server:
 
 ```json [settings]
 {
@@ -100,7 +100,7 @@ By default, the following default config is passed to the Ansible language serve
 ```
 
 > [!NOTE]
-> In order for linting to work, ensure that `ansible-lint` is installed and discoverable on your PATH
+> In order for linting to work, ensure that `ansible-lint` is installed and discoverable on your `PATH`
 
 When desired, any of the above default settings can be overridden under the `"lsp"` section of your Zed settings file. For example:
 
