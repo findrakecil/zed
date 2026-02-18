@@ -21,7 +21,7 @@ CompileFlags:
   Add: [-xc]
 ```
 
-By default clang and gcc will recognize `*.C` and `*.H` (uppercase extensions) as C++ and not C and so Zed too follows this convention. If you are working with a C-only project (perhaps one with legacy uppercase pathing like `FILENAME.C`) you can override this behavior by adding this to your settings:
+By default, Clang and GCC will recognize `*.C` and `*.H` (uppercase extensions) as C++ and not C and Zed follows this convention. If you are working with a C-only project (perhaps one with legacy uppercase pathing like `FILENAME.C`) you can override this behavior by adding this to your settings:
 
 ```json [settings]
 {
@@ -50,17 +50,17 @@ You can trigger formatting via {#kb editor::Format} or the `editor: format` acti
 Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > C, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "C": {
-      "format_on_save": "on",
-      "tab_size": 2
-    }
+"languages": {
+  "C": {
+    "format_on_save": "on",
+    "tab_size": 2
   }
+}
 ```
 
 ## Compile Commands
 
-For some projects Clangd requires a `compile_commands.json` file to properly analyze your project. This file contains the compilation database that tells clangd how your project should be built.
+For some projects clangd requires a `compile_commands.json` file to properly analyze your project. This file contains the compilation database that tells clangd how your project should be built.
 
 ### CMake Compile Commands
 
