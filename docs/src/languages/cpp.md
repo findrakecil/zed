@@ -16,6 +16,8 @@ You can configure which `clangd` binary Zed should use.
 
 By default, Zed will try to find a `clangd` in your `$PATH` and try to use that. If that binary successfully executes, it's used. Otherwise, Zed will fall back to installing its own `clangd` version and use that.
 
+### Use pre-release version
+
 If you want to install a pre-release `clangd` version instead you can instruct Zed to do so by setting `pre_release` to `true` in your `settings.json`:
 
 ```json [settings]
@@ -30,6 +32,8 @@ If you want to install a pre-release `clangd` version instead you can instruct Z
 }
 ```
 
+### Disable Zed's binary auto discovery
+
 If you want to disable Zed looking for a `clangd` binary, you can set `ignore_system_version` to `true` in your `settings.json`:
 
 ```json [settings]
@@ -43,6 +47,8 @@ If you want to disable Zed looking for a `clangd` binary, you can set `ignore_sy
   }
 }
 ```
+
+### Use binary in the custom path
 
 If you want to use a binary in a custom location, you can specify a `path` and optional `arguments`:
 
@@ -59,7 +65,7 @@ If you want to use a binary in a custom location, you can specify a `path` and o
 }
 ```
 
-This `"path"` has to be an absolute path.
+> **Note:** The `"path"` value has to be an absolute path.
 
 ## Arguments
 
@@ -80,7 +86,7 @@ You can pass any number of arguments to clangd. To see a full set of available o
 
 ## Formatting
 
-By default Zed will use the `clangd` language server for formatting C++ code. The Clangd is the same as the `clang-format` CLI tool. To configure this you can add a `.clang-format` file. For example:
+By default, Zed will use the `clangd` language server for formatting C++ code. The clangd is the same as the `clang-format` CLI tool. To configure this you can add a `.clang-format` file. For example:
 
 ```yaml
 # yaml-language-server: $schema=https://json.schemastore.org/clang-format-21.x.json
@@ -128,7 +134,7 @@ For more advanced usage of clangd configuration file, take a look into their [of
 
 ## Compile Commands
 
-For some projects Clangd requires a `compile_commands.json` file to properly analyze your project. This file contains the compilation database that tells clangd how your project should be built.
+For some projects clangd requires a `compile_commands.json` file to properly analyze your project. This file contains the compilation database that tells clangd how your project should be built.
 
 ### CMake Compile Commands
 
@@ -176,9 +182,7 @@ Automatically dims inactive sections of code due to preprocessor directives, suc
 
 ### Switch Between Source and Header Files
 
-Allows switching between corresponding C++ source files (e.g., `.cpp`) and header files (e.g., `.h`).
-by running the command {#action editor::SwitchSourceHeader} from the command palette or by setting
-a keybinding for the `editor::SwitchSourceHeader` action.
+Allows switching between corresponding C++ source files (e.g., `.cpp`) and header files (e.g., `.h`) by running the command {#action editor::SwitchSourceHeader} from the command palette or by setting a keybinding for the `editor::SwitchSourceHeader` action.
 
 ```json [settings]
 {
