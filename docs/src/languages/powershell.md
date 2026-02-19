@@ -27,14 +27,14 @@ The Zed PowerShell extension will default to the `pwsh` executable found in your
 
 The Zed PowerShell extensions will attempt to download [PowerShell Editor Services](https://github.com/PowerShell/PowerShellEditorServices) automatically.
 
-If want to use a specific binary, you can specify in your that in your Zed settings.json:
+If want to use a specific binary, you can specify in your that in your Zed `settings.json`:
 
 ```json [settings]
-  "lsp": {
-    "powershell-es": {
-      "binary": {
-        "path": "/path/to/PowerShellEditorServices"
-      }
+"lsp": {
+  "powershell-es": {
+    "binary": {
+      "path": "/path/to/PowerShellEditorServices"
     }
   }
+}
 ```
