@@ -18,14 +18,14 @@ To use [arnetheduck/nph](https://github.com/arnetheduck/nph) as a formatter, fol
 Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > Nim, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Nim": {
-      "formatter": {
-        "external": {
-          "command": "nph",
-          "arguments": ["-"]
-        }
+"languages": {
+  "Nim": {
+    "formatter": {
+      "external": {
+        "command": "nph",
+        "arguments": ["-"]
       }
     }
   }
+}
 ```
