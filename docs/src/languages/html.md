@@ -27,11 +27,11 @@ By default Zed uses [Prettier](https://prettier.io/) for formatting HTML.
 Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > HTML, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "HTML": {
-      "format_on_save": "off",
-    }
+"languages": {
+  "HTML": {
+    "format_on_save": "off",
   }
+}
 ```
 
 You can still trigger formatting manually with {#kb editor::Format} or by opening the [command palette](..//getting-started.md#command-palette) ({#kb command_palette::Toggle}) and selecting "Format Document".
@@ -41,32 +41,32 @@ You can still trigger formatting manually with {#kb editor::Format} or by openin
 To use the `vscode-html-language-server` language server auto-formatting instead of Prettier, configure the formatter in Settings ({#kb zed::OpenSettings}) under Languages > HTML, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "HTML": {
-      "formatter": "language_server",
-    }
+"languages": {
+  "HTML": {
+    "formatter": "language_server",
   }
+}
 ```
 
 You can customize various [formatting options](https://code.visualstudio.com/docs/languages/html#_formatting) for `vscode-html-language-server` via your Zed `settings.json`:
 
 ```json [settings]
-  "lsp": {
-    "vscode-html-language-server": {
-      "settings": {
-        "html": {
-          "format": {
-            // Indent under <html> and <head> (default: false)
-            "indentInnerHtml": true,
-            // Disable formatting inside <svg> or <script>
-            "contentUnformatted": "svg,script",
-            // Add an extra newline before <div> and <p>
-            "extraLiners": "div,p"
-          }
+"lsp": {
+  "vscode-html-language-server": {
+    "settings": {
+      "html": {
+        "format": {
+          // Indent under <html> and <head> (default: false)
+          "indentInnerHtml": true,
+          // Disable formatting inside <svg> or <script>
+          "contentUnformatted": "svg,script",
+          // Add an extra newline before <div> and <p>
+          "extraLiners": "div,p"
         }
       }
     }
   }
+}
 ```
 
 ## Using the Tailwind CSS Language Server with HTML
