@@ -10,11 +10,11 @@ Lua support is available through the [Lua extension](https://github.com/zed-exte
 - Tree-sitter: [tree-sitter-grammars/tree-sitter-lua](https://github.com/tree-sitter-grammars/tree-sitter-lua)
 - Language server: [LuaLS/lua-language-server](https://github.com/LuaLS/lua-language-server)
 
-## luarc.json
+## Configuration
 
 To configure LuaLS you can create a `.luarc.json` file in the root of your project.
 
-```json [settings]
+```json
 {
   "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "runtime.version": "Lua 5.4",
@@ -23,11 +23,19 @@ To configure LuaLS you can create a `.luarc.json` file in the root of your proje
 }
 ```
 
-See [LuaLS Settings Documentation](https://luals.github.io/wiki/settings/) for all available configuration options, or when editing this file in Zed available settings options will autocomplete, (e.g `runtime.version` will show `"Lua 5.1"`, `"Lua 5.2"`, `"Lua 5.3"`, `"Lua 5.4"` and `"LuaJIT"` as allowed values). Note when importing settings options from VS Code, remove the `Lua.` prefix. (e.g. `runtime.version` instead of `Lua.runtime.version`).
+See [LuaLS Settings Documentation](https://luals.github.io/wiki/settings/) for all available configuration options, or when editing this file in Zed available settings options will autocomplete, (e.g `runtime.version` will show `"Lua 5.1"`, `"Lua 5.2"`, `"Lua 5.3"`, `"Lua 5.4"` and `"LuaJIT"` as allowed values).
+
+> **Note:** When importing settings options from VS Code, remove the `Lua.` prefix. (e.g. `runtime.version` instead of `Lua.runtime.version`).
 
 ### LuaCATS Definitions
 
-LuaLS can provide enhanced LSP autocompletion suggestions and type validation with the help of LuaCATS (Lua Comment and Type System) definitions. These definitions are available for many common Lua libraries, and local paths containing them can be specified via `workspace.library` in `luarc.json`. You can do this via relative paths if you checkout your definitions into the same partent directory of your project (`../playdate-luacats`, `../love2d`, etc). Alternatively you can create submodule(s) inside your project for each LuaCATS definition repo.
+LuaLS can provide enhanced LSP autocompletion suggestions and type validation with the help of LuaCATS (Lua Comment and Type System) definitions.
+
+These definitions are available for many common Lua libraries, and local paths containing them can be specified via `workspace.library` in `luarc.json`.
+
+You can do this via relative paths if you checkout your definitions into the same partent directory of your project (`../playdate-luacats`, `../love2d`, etc).
+
+Alternatively, you can create submodule(s) inside your project for each LuaCATS definition repo.
 
 ### LÖVE (Love2D) {#love2d}
 
@@ -39,7 +47,7 @@ cd .. && git clone https://github.com/LuaCATS/love2d love2d-luacats
 
 Then in your `.luarc.json`:
 
-```
+```json
 {
   "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "runtime.version": "Lua 5.4",
@@ -60,7 +68,7 @@ cd .. && git clone https://github.com/notpeter/playdate-luacats
 
 Then in your `.luarc.json`:
 
-```json [settings]
+```json
 {
   "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "runtime.version": "Lua 5.4",
@@ -91,7 +99,7 @@ Then in your `.luarc.json`:
 
 ### Inlay Hints
 
-To enable [Inlay Hints](../configuring-languages.md#inlay-hints) for LuaLS in Zed
+To enable [Inlay Hints](../configuring-languages.md#inlay-hints) for LuaLS in Zed, you can follow these steps:
 
 1. Configure inlay hints in Settings ({#kb zed::OpenSettings}) under Languages > Lua, or add to your settings file:
 
@@ -112,11 +120,11 @@ To enable [Inlay Hints](../configuring-languages.md#inlay-hints) for LuaLS in Ze
 
 ## Formatting
 
-### LuaLS Formatting
+### LuaLS
 
-To enable auto-formatting with your LuaLS (provided by [CppCXY/EmmyLuaCodeStyle](https://github.com/CppCXY/EmmyLuaCodeStyle)) make sure you have `"format.enable": true,` in your .luarc.json:
+To enable auto-formatting with your LuaLS (provided by [CppCXY/EmmyLuaCodeStyle](https://github.com/CppCXY/EmmyLuaCodeStyle)) make sure you have `"format.enable": true,` in your `.luarc.json`:
 
-```json [settings]
+```json
 {
   "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
   "format.enable": true
@@ -138,11 +146,20 @@ Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > Lua
 
 You can customize various EmmyLuaCodeStyle style options via `.editorconfig`, see [lua.template.editorconfig](https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig) for all available options.
 
-### StyLua Formatting
+### StyLua
 
-Alternatively to use [StyLua](https://github.com/JohnnyMorganz/StyLua) for auto-formatting:
+Here are the steps to use [StyLua](https://github.com/JohnnyMorganz/StyLua) for auto-formatting:
 
-1. Install [StyLua](https://github.com/JohnnyMorganz/StyLua): `brew install stylua` or `cargo install stylua --features lua52,lua53,lua54,luau,luajit` (feel free to remove any Lua versions you don't need).
+1. Install [StyLua](https://github.com/JohnnyMorganz/StyLua):
+
+```sh
+brew install stylua
+
+# or, using cargo
+# feel free to remove any Lua versions you don't need
+cargo install stylua --features lua52,lua53,lua54,luau,luajit
+```
+
 2. Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > Lua, or add to your settings file:
 
 ```json [settings]
