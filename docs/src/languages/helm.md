@@ -12,19 +12,19 @@ Support for Helm in Zed is provided by the community-maintained [Helm extension]
 
 ## Setup
 
-Enable Helm language for Helm files by editing your `.zed/settings.json` and adding:
+Enable Helm language for Helm files by editing Zed `settings.json` and adding:
 
 ```json [settings]
-  "file_types": {
-    "Helm": [
-      "**/templates/**/*.tpl",
-      "**/templates/**/*.yaml",
-      "**/templates/**/*.yml",
-      "**/helmfile.d/**/*.yaml",
-      "**/helmfile.d/**/*.yml",
-      "**/values*.yaml"
-    ]
-  }
+"file_types": {
+  "Helm": [
+    "**/templates/**/*.tpl",
+    "**/templates/**/*.yaml",
+    "**/templates/**/*.yml",
+    "**/helmfile.d/**/*.yaml",
+    "**/helmfile.d/**/*.yml",
+    "**/values*.yaml"
+  ]
+}
 ```
 
-This will also mark values.yaml files as the type helm, since helm-ls supports this.
+This will also mark `values.yaml` files as the type Helm, since `helm-ls` supports this.
