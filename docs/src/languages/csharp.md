@@ -5,7 +5,7 @@ description: "Configure C# language support in Zed, including language servers, 
 
 # C#
 
-Note language name is "CSharp" for settings not "C#'
+> **Note:** Language name is "CSharp" for settings not "C#"
 
 C# support is available through the [C# extension](https://github.com/zed-extensions/csharp).
 
