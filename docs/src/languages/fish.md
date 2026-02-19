@@ -12,7 +12,7 @@ Report issues to: [https://github.com/hasit/zed-fish/issues](https://github.com/
 
 ### Formatting
 
-Zed supports auto-formatting fish code using external tools like [`fish_indent`](https://fishshell.com/docs/current/cmds/fish_indent.html), which is included with fish.
+Zed supports auto-formatting Fish code using external tools like [`fish_indent`](https://fishshell.com/docs/current/cmds/fish_indent.html), which is included with Fish.
 
 1. Ensure `fish_indent` is available in your path and check the version:
 
@@ -21,16 +21,16 @@ which fish_indent
 fish_indent --version
 ```
 
-2. Configure Zed to automatically format fish code with `fish_indent`:
+2. Configure Zed to automatically format Fish code with `fish_indent`:
 
 ```json [settings]
-  "languages": {
-    "Fish": {
-      "formatter": {
-        "external": {
-          "command": "fish_indent"
-        }
+"languages": {
+  "Fish": {
+    "formatter": {
+      "external": {
+        "command": "fish_indent"
       }
     }
-  },
+  }
+},
 ```
