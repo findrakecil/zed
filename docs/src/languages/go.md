@@ -13,21 +13,23 @@ Go support is available natively in Zed.
 
 ## Setup
 
-We recommend installing gopls via go's package manager and not via Homebrew or your Linux distribution's package manager.
+We recommend installing `gopls` via Go's package manager and not via Homebrew or your Linux distribution's package manager.
 
-1. Make sure you have uninstalled any version of gopls you have installed via your package manager:
+1. Make sure you have uninstalled any version of `gopls` you have installed via your package manager:
 
 ```sh
 # MacOS homebrew
 brew remove gopls
+
 # Ubuntu
 sudo apt-get remove gopls
 sudo snap remove gopls
+
 # Arch
 sudo pacman -R gopls
 ```
 
-2. Install/Update `gopls` to the latest version using the go module tool:
+2. Install or update `gopls` to the latest version using the Go module tool:
 
 ```sh
 go install golang.org/x/tools/gopls@latest
@@ -44,39 +46,35 @@ If `gopls` is not found you will likely need to add `export PATH="$PATH:$HOME/go
 
 ## Inlay Hints
 
-Zed sets the following initialization options for inlay hints:
+Zed sets the following initialization options for inlay hints to make the language server send back inlay hints when Zed has them enabled in the settings.
 
 ```json [settings]
 "hints": {
-    "assignVariableTypes": true,
-    "compositeLiteralFields": true,
-    "compositeLiteralTypes": true,
-    "constantValues": true,
-    "functionTypeParameters": true,
-    "parameterNames": true,
-    "rangeVariableTypes": true
+  "assignVariableTypes": true,
+  "compositeLiteralFields": true,
+  "compositeLiteralTypes": true,
+  "constantValues": true,
+  "functionTypeParameters": true,
+  "parameterNames": true,
+  "rangeVariableTypes": true
 }
 ```
 
-to make the language server send back inlay hints when Zed has them enabled in the settings.
-
-Use
+If you want to override those settings, set them in the `settings.json` file:
 
 ```json [settings]
 "lsp": {
-    "gopls": {
-        "initialization_options": {
-            "hints": {
-                // ....
-            }
-        }
+  "gopls": {
+    "initialization_options": {
+      "hints": {
+        // ....
+      }
     }
+  }
 }
 ```
 
-to override these settings.
-
-See [gopls inlayHints documentation](https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md) for more information.
+See [`gopls` inlayHints documentation](https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md) for more information.
 
 ## Debugging
 
@@ -88,7 +86,7 @@ For more control, you can add debug configurations to `.zed/debug.json`. See bel
 
 ### Debug Go Packages
 
-To debug a specific package, you can do so by setting the Delve mode to "debug". In this case "program" should be set to the package name.
+To debug a specific package, you can do so by setting the Delve `mode` to `"debug"`. In this case, `program` should be set to the package name.
 
 ```json [debug]
 [
@@ -114,8 +112,8 @@ To debug a specific package, you can do so by setting the Delve mode to "debug".
 
 ### Debug Go Tests
 
-To debug the tests for a package, set the Delve mode to "test".
-The "program" is still the package name, and you can use the "buildFlags" to do things like set tags, and the "args" to set args on the test binary. (See `go help testflags` for more information on doing that).
+To debug the tests for a package, set the Delve `mode` to `"test"`.
+The `program` is still the package name, and you can use the `buildFlags` to do things like set tags, and the `args` to set arguments on the test binary. (See `go help testflags` for more information on doing that).
 
 ```json [debug]
 [
@@ -134,8 +132,8 @@ The "program" is still the package name, and you can use the "buildFlags" to do 
 
 ### Build and debug separately
 
-If you need to build your application with a specific command, you can use the "exec" mode of Delve. In this case "program" should point to an executable,
-and the "build" command should build that.
+If you need to build your application with a specific command, you can use the `"exec"` mode of Delve. In this case, `program` should point to an executable,
+and the `build` command should build that.
 
 ```json [debug]
 [
@@ -189,15 +187,11 @@ In such case Zed won't spawn a new instance of Delve, as it opts to use an exist
 ## Go Mod
 
 - Tree-sitter: [camdencheek/tree-sitter-go-mod](https://github.com/camdencheek/tree-sitter-go-mod)
-- Language Server: N/A
 
 ## Go Sum
 
 - Tree-sitter: [amaanq/tree-sitter-go-sum](https://github.com/amaanq/tree-sitter-go-sum)
-- Language Server: N/A
 
 ## Go Work
 
-- Tree-sitter:
-  [tree-sitter-go-work](https://github.com/d1y/tree-sitter-go-work)
-- Language Server: N/A
+- Tree-sitter: [tree-sitter-go-work](https://github.com/d1y/tree-sitter-go-work)
