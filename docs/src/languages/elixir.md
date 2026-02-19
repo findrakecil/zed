@@ -27,14 +27,14 @@ The Elixir extension offers language server support for `expert`, `elixir-ls`, `
 Configure language servers in Settings ({#kb zed::OpenSettings}) under Languages > Elixir, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Elixir": {
-      "language_servers": ["expert", "!elixir-ls", "!next-ls", "!lexical", "..."]
-    },
-    "HEEX": {
-      "language_servers": ["expert", "!elixir-ls", "!next-ls", "!lexical", "..."]
-    }
+"languages": {
+  "Elixir": {
+    "language_servers": ["expert", "!elixir-ls", "!next-ls", "!lexical", "..."]
+  },
+  "HEEX": {
+    "language_servers": ["expert", "!elixir-ls", "!next-ls", "!lexical", "..."]
   }
+}
 ```
 
 ### Next LS
@@ -42,14 +42,14 @@ Configure language servers in Settings ({#kb zed::OpenSettings}) under Languages
 Configure language servers in Settings ({#kb zed::OpenSettings}) under Languages > Elixir, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Elixir": {
-      "language_servers": ["next-ls", "!expert", "!elixir-ls", "!lexical", "..."]
-    },
-    "HEEX": {
-      "language_servers": ["next-ls", "!expert", "!elixir-ls", "!lexical", "..."]
-    }
+"languages": {
+  "Elixir": {
+    "language_servers": ["next-ls", "!expert", "!elixir-ls", "!lexical", "..."]
+  },
+  "HEEX": {
+    "language_servers": ["next-ls", "!expert", "!elixir-ls", "!lexical", "..."]
   }
+}
 ```
 
 ### Lexical
@@ -57,14 +57,14 @@ Configure language servers in Settings ({#kb zed::OpenSettings}) under Languages
 Configure language servers in Settings ({#kb zed::OpenSettings}) under Languages > Elixir, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Elixir": {
-      "language_servers": ["lexical", "!expert", "!elixir-ls", "!next-ls", "..."]
-    },
-    "HEEX": {
-      "language_servers": ["lexical", "!expert", "!elixir-ls", "!next-ls", "..."]
-    }
+"languages": {
+  "Elixir": {
+    "language_servers": ["lexical", "!expert", "!elixir-ls", "!next-ls", "..."]
+  },
+  "HEEX": {
+    "language_servers": ["lexical", "!expert", "!elixir-ls", "!next-ls", "..."]
   }
+}
 ```
 
 ## Setting up `elixir-ls`
@@ -83,7 +83,9 @@ brew install elixir-ls
 
 3. Restart Zed
 
-> If `elixir-ls` is not running in an elixir project, check the error log via the command palette action `zed: open log`. If you find an error message mentioning: `invalid LSP message header "Shall I install Hex? (if running non-interactively, use \"mix local.hex --force\") [Yn]`, you might need to install [`Hex`](https://hex.pm). You run `elixir-ls` from the command line and accept the prompt to install `Hex`.
+> If `elixir-ls` is not running in an Elixir project, check the error log via the command palette action `zed: open log`.
+>
+> If you find an error message mentioning: `invalid LSP message header "Shall I install Hex? (if running non-interactively, use \"mix local.hex --force\") [Yn]`, you might need to install [`Hex`](https://hex.pm). You run `elixir-ls` from the command line and accept the prompt to install `Hex`.
 
 ### Formatting with Mix
 
@@ -109,29 +111,29 @@ Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > Eli
 
 ### Additional workspace configuration options
 
-You can pass additional elixir-ls workspace configuration options via `lsp` settings in your settings file ([how to edit](../configuring-zed.md#settings-files)).
+You can pass additional `elixir-ls` workspace configuration options via `lsp` settings in your settings file ([how to edit](../configuring-zed.md#settings-files)).
 
 The following example disables dialyzer:
 
 ```json [settings]
-  "lsp": {
-    "elixir-ls": {
-      "settings": {
-        "dialyzerEnabled": false
-      }
+"lsp": {
+  "elixir-ls": {
+    "settings": {
+      "dialyzerEnabled": false
     }
   }
+}
 ```
 
 See [ElixirLS configuration settings](https://github.com/elixir-lsp/elixir-ls#elixirls-configuration-settings) for more options.
 
-### HEEx
+## HEEx
 
 Zed also supports HEEx templates. HEEx is a mix of [EEx](https://hexdocs.pm/eex/1.12.3/EEx.html) (Embedded Elixir) and HTML, and is used in Phoenix LiveView applications.
 
 - Tree-sitter: [phoenixframework/tree-sitter-heex](https://github.com/phoenixframework/tree-sitter-heex)
 
-#### Using the Tailwind CSS Language Server with HEEx
+### Using the Tailwind CSS Language Server with HEEx
 
 To get all features (autocomplete, linting, and hover docs) from the [Tailwind CSS language server](https://github.com/tailwindlabs/tailwindcss-intellisense/tree/HEAD/packages/tailwindcss-language-server#readme) in HEEx files, add the following to your settings file ([how to edit](../configuring-zed.md#settings-files)):
 
