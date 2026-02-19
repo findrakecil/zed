@@ -113,11 +113,11 @@ If you want to use a binary in a custom location, you can specify a `path` and o
 }
 ```
 
-This `"path"` has to be an absolute path.
+> **Note:** The `path` value has to be an absolute path.
 
 ## Alternate Targets
 
-If you want rust-analyzer to provide diagnostics for a target other than your current platform (e.g. for windows when running on macOS) you can use the following Zed lsp settings:
+If you want `rust-analyzer` to provide diagnostics for a target other than your current platform (e.g. for windows when running on macOS) you can use the following Zed LSP settings:
 
 ```json [settings]
 {
@@ -141,8 +141,9 @@ rustup target list --installed
 
 ## LSP tasks
 
-Zed provides tasks using tree-sitter, but rust-analyzer has an LSP extension method for querying file-related tasks via LSP.
-This is enabled by default and can be configured as
+Zed provides tasks using tree-sitter, but `rust-analyzer` has an LSP extension method for querying file-related tasks via LSP.
+
+This is enabled by default and can be configured as:
 
 ```json [settings]
 "lsp": {
@@ -154,7 +155,7 @@ This is enabled by default and can be configured as
 
 ## Manual Cargo Diagnostics fetch
 
-By default, rust-analyzer has `checkOnSave: true` enabled, which causes every buffer save to trigger a `cargo check --workspace --all-targets` command.
+By default, `rust-analyzer` has `checkOnSave: true` enabled, which causes every buffer save to trigger a `cargo check --workspace --all-targets` command.
 If disabled with `checkOnSave: false` (see the example of the server configuration json above), it's still possible to fetch the diagnostics manually, with the `editor: run/clear/cancel flycheck` commands in Rust files to refresh cargo diagnostics; the project diagnostics editor will also refresh cargo diagnostics with `editor: run flycheck` command when the setting is enabled.
 
 ## More server configuration
@@ -163,7 +164,7 @@ If disabled with `checkOnSave: false` (see the example of the server configurati
 TBD: Is it possible to specify RUSTFLAGS? https://github.com/zed-industries/zed/issues/14334
 -->
 
-Rust-analyzer [manual](https://rust-analyzer.github.io/book/) describes various features and configuration options for rust-analyzer language server.
+Rust-analyzer [manual](https://rust-analyzer.github.io/book/) describes various features and configuration options for `rust-analyzer` language server.
 Rust-analyzer in Zed runs with the default parameters.
 
 ### Large projects and performance
@@ -191,10 +192,10 @@ While that works fine on small projects, it does not scale well.
 
 The alternatives would be to use [tasks](../tasks.md), as Zed already provides a `cargo check --workspace --all-targets` task and the ability to cmd/ctrl-click on the terminal output to navigate to the error, and limit or turn off the check on save feature entirely.
 
-Check on save feature is responsible for returning part of the diagnostics based on cargo check output, so turning it off will limit rust-analyzer with its own [diagnostics](https://rust-analyzer.github.io/book/diagnostics.html).
+Check on save feature is responsible for returning part of the diagnostics based on cargo check output, so turning it off will limit `rust-analyzer` with its own [diagnostics](https://rust-analyzer.github.io/book/diagnostics.html).
 
 Consider more `rust-analyzer.cargo.` and `rust-analyzer.check.` and `rust-analyzer.diagnostics.` settings from the manual for more fine-grained configuration.
-Here's a snippet for Zed settings.json (the language server will restart automatically after the `lsp.rust-analyzer` section is edited and saved):
+Here's a snippet for Zed `settings.json` (the language server will restart automatically after the `lsp.rust-analyzer` section is edited and saved):
 
 ```json [settings]
 {
