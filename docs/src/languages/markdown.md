@@ -8,7 +8,6 @@ description: "Configure Markdown language support in Zed, including language ser
 Markdown support is available natively in Zed.
 
 - Tree-sitter: [tree-sitter-markdown](https://github.com/tree-sitter-grammars/tree-sitter-markdown)
-- Language Server: N/A
 
 ## Syntax Highlighting Code Blocks
 
@@ -26,18 +25,18 @@ def fib(n):
 
 ## Configuration
 
-### Format
+### Formatting
 
-Zed supports using Prettier to automatically re-format Markdown documents. You can trigger this manually via the {#action editor::Format} action or via the {#kb editor::Format} keyboard shortcut. Alternately, you can enable format on save.
+Zed supports using Prettier to automatically format Markdown documents. You can trigger this manually via the {#action editor::Format} action or via the {#kb editor::Format} keyboard shortcut.
 
-Configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > Markdown, or add to your settings file:
+Alternately, you can enable format on save by configure formatting in Settings ({#kb zed::OpenSettings}) under Languages > Markdown, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Markdown": {
-      "format_on_save": "on"
-    }
-  },
+"languages": {
+  "Markdown": {
+    "format_on_save": "on"
+  }
+},
 ```
 
 ### List Continuation
@@ -53,11 +52,11 @@ Pressing Enter on an empty list item removes the marker and exits the list.
 To disable this behavior, configure in Settings ({#kb zed::OpenSettings}) under Languages > Markdown, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Markdown": {
-      "extend_list_on_newline": false
-    }
-  },
+"languages": {
+  "Markdown": {
+    "extend_list_on_newline": false
+  }
+},
 ```
 
 ### List Indentation
@@ -67,11 +66,11 @@ Zed indents list items when you press Tab while the cursor is on a line containi
 To disable this behavior, configure in Settings ({#kb zed::OpenSettings}) under Languages > Markdown, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Markdown": {
-      "indent_list_on_tab": false
-    }
-  },
+"languages": {
+  "Markdown": {
+    "indent_list_on_tab": false
+  }
+},
 ```
 
 ### Trailing Whitespace
@@ -81,9 +80,9 @@ By default Zed will remove trailing whitespace on save. If you rely on invisible
 Configure in Settings ({#kb zed::OpenSettings}) under Languages > Markdown, or add to your settings file:
 
 ```json [settings]
-  "languages": {
-    "Markdown": {
-      "remove_trailing_whitespace_on_save": false
-    }
-  },
+"languages": {
+  "Markdown": {
+    "remove_trailing_whitespace_on_save": false
+  }
+},
 ```
