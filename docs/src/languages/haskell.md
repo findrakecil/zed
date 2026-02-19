@@ -12,8 +12,16 @@ Haskell support is available through the [Haskell extension](https://github.com/
 
 ## Installing HLS
 
-Recommended method to [install haskell-language-server](https://haskell-language-server.readthedocs.io/en/latest/installation.html) (HLS) is via [ghcup](https://www.haskell.org/ghcup/install/) (`curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-`):
+Recommended method to [install haskell-language-server](https://haskell-language-server.readthedocs.io/en/latest/installation.html) (HLS) is via [`ghcup`](https://www.haskell.org/ghcup/install/).
+
+
+You can install `ghcup` with following command:
+
+```sh
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+```
+
+Then, install HLS
 
 ```sh
 ghcup install hls
@@ -22,7 +30,7 @@ which haskell-language-server-wrapper
 
 ## Configuring HLS
 
-If you need to configure haskell-language-server (hls) you can add configuration options to your Zed settings.json:
+Add your configuration options to the Zed `settings.json` file:
 
 ```json [settings]
 {
@@ -38,9 +46,9 @@ If you need to configure haskell-language-server (hls) you can add configuration
 }
 ```
 
-See the official [configuring haskell-language-server](https://haskell-language-server.readthedocs.io/en/latest/configuration.html) docs for more options.
+See the official [configuring HSL](https://haskell-language-server.readthedocs.io/en/latest/configuration.html) docs for more options.
 
-If you would like to use a specific hls binary, or perhaps use [static-ls](https://github.com/josephsumabat/static-ls) as a drop-in replacement instead, you can specify the binary path and arguments:
+If you would like to use a specific HLS binary, or perhaps use [`static-ls`](https://github.com/josephsumabat/static-ls) as a drop-in replacement instead, you can specify the binary path and arguments:
 
 ```json [settings]
 {
