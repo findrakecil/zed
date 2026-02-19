@@ -9,7 +9,7 @@ Deno support is available through the [Deno extension](https://github.com/zed-ex
 
 - Language server: [Deno Language Server](https://docs.deno.com/runtime/manual/advanced/language_server/overview/)
 
-## Deno Configuration
+## Configuration
 
 To use the Deno Language Server with TypeScript and TSX files, you will likely wish to disable the default language servers and enable Deno.
 
@@ -70,33 +70,33 @@ To get completions for `deno.json` or `package.json`, add the following to your 
 
 ```json [settings]
 "lsp": {
-    "json-language-server": {
-      "settings": {
-        "json": {
-          "schemas": [
-            {
-              "fileMatch": [
-                "deno.json",
-                "deno.jsonc"
-              ],
-              "url": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json"
-            },
-            {
-              "fileMatch": [
-                "package.json"
-              ],
-              "url": "https://www.schemastore.org/package"
-            }
-          ]
-        }
+  "json-language-server": {
+    "settings": {
+      "json": {
+        "schemas": [
+          {
+            "fileMatch": [
+              "deno.json",
+              "deno.jsonc"
+            ],
+            "url": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json"
+          },
+          {
+            "fileMatch": [
+              "package.json"
+            ],
+            "url": "https://www.schemastore.org/package"
+          }
+        ]
       }
     }
   }
+}
 ```
 
 ## DAP support
 
-To debug deno programs, add this to `.zed/debug.json`
+To debug Deno programs, add this to `.zed/debug.json`
 
 ```json [debug]
 [
@@ -116,7 +116,7 @@ To debug deno programs, add this to `.zed/debug.json`
 
 ## Runnable support
 
-To run deno tasks like tests from the ui, add this to `.zed/tasks.json`
+To run Deno tasks like tests from the UI, add this to `.zed/tasks.json`
 
 ```json [tasks]
 [
